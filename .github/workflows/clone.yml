@@ -29,9 +29,9 @@ jobs:
         run: node scrape.js "${{ github.event.inputs.target_url }}"
 
       - name: Commit Result
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add output
-          git commit -m "Clone result for ${{ github.event.inputs.target_url }}" || echo "No changes"
-          git push
+  run: |
+    git config user.name "github-actions"
+    git config user.email "actions@github.com"
+    git add output
+    git commit -m "Clone result for ${{ github.event.inputs.target_url }}" || echo "No changes"
+    git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
