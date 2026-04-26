@@ -14,18 +14,19 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: "npm"
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Scraper
-        run: node scrape.js ${{ github.event.inputs.target_url }}
+        run: node scrape.js "${{ github.event.inputs.target_url }}"
 
       - name: Commit Result
         run: |
