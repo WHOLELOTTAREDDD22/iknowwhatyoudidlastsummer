@@ -1,0 +1,36 @@
+name: Website Cloner
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: "Enter website URL"
+        required: true
+        type: string
+
+jobs:
+  clone:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Scraper
+        run: node scrape.js "${{ github.event.inputs.target_url }}"
+
+      - name: Commit Result
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add output
+          git commit -m "Clone result for ${{ github.event.inputs.target_url }}" || echo "No changes"
+          git push
