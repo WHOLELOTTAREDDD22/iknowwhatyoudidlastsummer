@@ -67,7 +67,7 @@ async function cloneWebsite(siteUrl) {
 
     await downloadBinary(full, filepath);
 
-    // return relative path for HTML
+    // return relative path
     return path.relative("output", filepath).replace(/\\/g, "/");
 }
 
