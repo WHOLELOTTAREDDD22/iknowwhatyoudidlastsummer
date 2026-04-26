@@ -55,20 +55,21 @@ async function cloneWebsite(siteUrl) {
     for (let folder of Object.values(folders)) fs.ensureDirSync(folder);
 
     // Helper to process any asset (image, css, js, video...)
-    async function processAsset(src, folder, prefix) {
-        if (!src) return null;
+ async function processAsset(src, folder, prefix) {
+    if (!src) return null;
 
-        const full = getFullUrl(siteUrl, src);
-        if (!full) return null;
+    const full = getFullUrl(siteUrl, src);
+    if (!full) return null;
 
-        const ext = path.extname(full).split("?")[0] || "";
-        const filename = `${prefix}_${Math.random().toString(36).slice(2)}${ext}`;
-        const filepath = path.join(folder, filename);
+    const ext = path.extname(full).split("?")[0] || "";
+    const filename = `${prefix}_${Math.random().toString(36).slice(2)}${ext}`;
+    const filepath = path.join(folder, filename);
 
-        await downloadBinary(full, filepath);
+    await downloadBinary(full, filepath);
 
-        return filepath;
-    }
+    // return relative path for HTML
+    return path.relative("output", filepath).replace(/\\/g, "/");
+}
 
     // DOWNLOAD IMAGES (SYNC LOOP)
     const imgTags = $("img").toArray();
